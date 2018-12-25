@@ -293,10 +293,10 @@ class ReversiAI {
         for (int i = 0; i < 64; i++) {
             stable[i] = 0;
         }
-        boarderStable(0, 7, 1, 7, 9, 8);
-        boarderStable(56, 63, 1, -9, -7, -8);
-        boarderStable(7, 63, 8, -9, 7, -1);
-        boarderStable(0, 56, 8, -7, 9, 1);
+        boarderStable(0, 7, 1, Dirs.dirSW.get(), Dirs.dirSE.get(), Dirs.dirS.get());
+        boarderStable(56, 63, 1, Dirs.dirNW.get(), Dirs.dirNE.get(), Dirs.dirN.get());
+        boarderStable(7, 63, 8, Dirs.dirNW.get(), Dirs.dirSW.get(), Dirs.dirW.get());
+        boarderStable(0, 56, 8, Dirs.dirNE.get(), Dirs.dirSE.get(), Dirs.dirE.get());
         int score = 0;
         for (int i = 0; i < 64; i++) {
             if (field[i] == 2) {
