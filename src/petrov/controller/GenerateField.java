@@ -11,7 +11,13 @@ import static petrov.view.Main.endGame;
 
 public class GenerateField extends Field {
     private ReversiField gameLogic = new ReversiField();
+    private ImageIcon empty = new ImageIcon("resources\\empty.png");
+    private ImageIcon white = new ImageIcon("resources\\white.png");
+    private ImageIcon black = new ImageIcon("resources\\black.png");
 
+    /**
+     * Method creates new field and starts new game
+     */
     public void createEmptyField(JPanel panel, Field classField, JFrame jFrame) {
         gameLogic.gameStarted();
         for (int i = 0; i < 64; i++) {
@@ -35,13 +41,15 @@ public class GenerateField extends Field {
         }
     }
 
+    /**
+     * Method adds to current button a listener that will make a turn in this cell after you pressed on this button
+     */
     private void addActionListener(RedrawCell button, int i, Field classField, JFrame jFrame, JPanel panel) {
         button.addActionListener(e -> {
             if (gameLogic.makeTurn(i)) {
                 gameLogic.makeTurnAI();
-                button.changeButton(button, classField, gameLogic);
-            }
-            else{
+                button.changeButton(button, classField, gameLogic, empty, white, black);
+            } else {
                 JOptionPane.showMessageDialog(jFrame,
                         "You can't move in this cell");
                 if (!gameLogic.canTurn()) {

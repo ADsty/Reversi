@@ -15,6 +15,9 @@ import petrov.controller.GenerateField;
 
 public class Main {
 
+    /**
+     * Method just starts the program
+     */
     public static void main(String[] args) throws IOException {
         JFrame jFrame = new JFrame();
         JPanel panel = new JPanel();
@@ -28,6 +31,9 @@ public class Main {
         jFrame.add(panel);
     }
 
+    /**
+     * Method creates a GUI version of game field and starts a new game
+     */
     private static void startGame(Field classField, JFrame jFrame, JPanel panel) {
         int mapSize = classField.mapSize;
         jFrame.setBounds(540 - 3 * mapSize, 360 - 20 * mapSize, mapSize * 50, mapSize * 50 + 25);
@@ -40,6 +46,9 @@ public class Main {
         jFrame.setVisible(true);
     }
 
+    /**
+     * Method ends the game and offers for a new game
+     */
     public static void endGame(String message, Field classField, JFrame jFrame, JPanel panel) {
         for (RedrawCell button : classField.buttons) {
             button.setPressedIcon(null);

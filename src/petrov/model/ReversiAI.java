@@ -11,30 +11,34 @@ class ReversiAI {
     // Methods that duplicate methods from main logic of game
 
     static private final int[] DIRECTIONS = new int[]{
-            1, 7, 8, 9, -1, -7, -8, -9
+            Dirs.dirE.get(), Dirs.dirSW.get(), Dirs.dirS.get(), Dirs.dirSE.get(), Dirs.dirW.get(), Dirs.dirNE.get(),
+            Dirs.dirNW.get(), Dirs.dirNW.get()
     };
 
-    private void flipOppositeChips(int cell , int[] caps , int n) {
+    private void flipOppositeChips(int cell, int[] caps, int n) {
         for (int dir : DIRECTIONS) {
             int current = cell;
-            if (checkLength(current, dir) && !isWrongDirect(current , dir)) {
+            int check = checkLength(current, dir);
+            if (check != 0 && !isWrongDirect(current, dir)) {
                 current += dir;
                 if (correct(current)) {
-                    while (correct(current) && !isWrongDirect(current , dir) && field[current] == turnOpposite(turn)) {
+                    while (correct(current) && !isWrongDirect(current, dir) && field[current] == turnOpposite(turn)) {
+                        if (check == 0) break;
                         field[current] = turn;
                         n++;
                         caps[n] = current;
                         current += dir;
+                        check--;
                     }
                 }
             }
         }
     }
 
-    private boolean checkLength(int cell, int dir) {
+    private int checkLength(int cell, int dir) {
         int result = 0;
         int direct = dir;
-        if (correct(cell + direct) && !isWrongDirect(cell , direct)) {
+        if (correct(cell + direct) && !isWrongDirect(cell, direct)) {
             while (correct(cell + direct) && field[cell + direct] == turnOpposite(turn)) {
                 result++;
                 direct += dir;
@@ -43,10 +47,10 @@ class ReversiAI {
                 if (field[cell + direct] == 0) result = 0;
             }
             if (correct(cell + direct)) {
-                if (field[cell + direct] == 1) return result != 0;
+                if (field[cell + direct] == 1) return result;
             }
         }
-        return result != 0;
+        return result;
     }
 
     private int turnOpposite(int turn) {
@@ -57,7 +61,7 @@ class ReversiAI {
     private boolean canMakeTurnInThisCell(int cell) {
         if (field[cell] == 0) {
             for (int dir : DIRECTIONS) {
-                if (!isWrongDirect(cell , dir)) {
+                if (!isWrongDirect(cell, dir)) {
                     int current = cell + dir;
                     if (correct(current)) {
                         while (correct(current) && turnOpposite(turn) == field[current]) {
@@ -73,73 +77,97 @@ class ReversiAI {
         return false;
     }
 
-    private boolean leftWrong(int cell){
-        for(int i = 1 ; i < 8 ; i++){
-            if(cell == i * 8) return true;
+    private boolean leftWrong(int cell) {
+        for (int i = 1; i < 8; i++) {
+            if (cell == i * 8) return true;
         }
         return false;
     }
 
-    private boolean rightWrong(int cell){
+    private boolean rightWrong(int cell) {
         int d = 7;
-        for(int i = 0 ; i < 8 ; i++){
-            if(cell == d) return true;
+        for (int i = 0; i < 8; i++) {
+            if (cell == d) return true;
             d += 8;
         }
         return false;
     }
 
-    private boolean isWrongDirect(int cell , int dir){
-        if(cell == 0){
-            if(dir == -8 || dir == -9 || dir == -1 || dir ==8) return true;
+    private boolean isWrongDirect(int cell, int dir) {
+        if (cell == 0) {
+            if (dir == Dirs.dirN.get() || dir == Dirs.dirNW.get() || dir == Dirs.dirW.get() || dir == Dirs.dirS.get())
+                return true;
         }
-        if(cell == 7){
-            if(dir == -8 || dir == -7 || dir == 1 || dir == 9) return true;
+        if (cell == 7) {
+            if (dir == Dirs.dirN.get() || dir == Dirs.dirNE.get() || dir == Dirs.dirE.get() || dir == Dirs.dirSE.get())
+                return true;
         }
-        if(cell == 56){
-            if(dir == 8 || dir == 7 || dir == -1 || dir == -9) return true;
+        if (cell == 56) {
+            if (dir == Dirs.dirS.get() || dir == Dirs.dirSW.get() || dir == Dirs.dirW.get() || dir == Dirs.dirNW.get())
+                return true;
         }
-        if(cell == 63){
-            if(dir == 8 || dir == 9 || dir == 1 || dir == -7) return true;
+        if (cell == 63) {
+            if (dir == Dirs.dirS.get() || dir == Dirs.dirSE.get() || dir == Dirs.dirE.get() || dir == Dirs.dirNE.get())
+                return true;
         }
-        if(cell > 0 && cell < 8 ){
-            if(dir == -9 || dir == -8 || dir == -7) return true;
+        if (cell > 0 && cell < 8) {
+            if (dir == Dirs.dirNW.get() || dir == Dirs.dirN.get() || dir == Dirs.dirNE.get()) return true;
         }
-        if(leftWrong(cell)){
-            if(dir == -1 || dir == -9 || dir == 7) return true;
+        if (leftWrong(cell)) {
+            if (dir == Dirs.dirW.get() || dir == Dirs.dirNW.get() || dir == Dirs.dirSW.get()) return true;
         }
-        if(rightWrong(cell)){
-            if(dir == -7 || dir == 1 || dir == 9) return true;
+        if (rightWrong(cell)) {
+            if (dir == Dirs.dirNE.get() || dir == Dirs.dirE.get() || dir == Dirs.dirSE.get()) return true;
         }
-        if(cell > 56 && cell < 64){
-            if(dir == 7 || dir == 8 || dir == 9) return true;
+        if (cell > 56 && cell < 64) {
+            if (dir == Dirs.dirSW.get() || dir == Dirs.dirS.get() || dir == Dirs.dirSE.get()) return true;
         }
         return false;
     }
+
 
     private boolean correct(int cell) {
         return (cell >= 0 && cell < 64);
     }
 
     // End of copied methods
+
+    /**
+     * Method takes the field from current game
+     *
+     * @param field is the field that AI wants to take
+     */
     void takeField(int[] field) {
         this.field = field;
     }
 
+    /**
+     * @param cell is a cell where AI wants to make the turn
+     * @param dir  is direction of the turn
+     * @param caps is array of captured chips which needs to unmake the turn
+     * @param n    is number of chips that is under AI control for now
+     * @return number of chips that is under AI control for now
+     */
     private int capture(int cell, int dir, int[] caps, int n) {
         int current = cell + dir;
-        while (correct(current) && !isWrongDirect(current , dir) && field[current] == turnOpposite(turn)) current += dir;
-        if (correct(current) && !isWrongDirect(current , dir) && field[current] == turn) {
+        while (correct(current) && !isWrongDirect(current, dir) && field[current] == turnOpposite(turn)) current += dir;
+        if (correct(current) && !isWrongDirect(current, dir) && field[current] == turn) {
             for (int i = cell + dir; i != current; i += dir) {
                 n++;
                 caps[n] = i;
                 field[i] = turn;
-                flipOppositeChips(field[i] , caps , n);
+                flipOppositeChips(field[i], caps, n);
             }
         }
         return n;
     }
 
+    /**
+     * Method generates all possible moves for AI
+     *
+     * @param moves is array of all moves that will be used to compare with each other
+     * @return number of generated moves
+     */
     private int genMoves(int[] moves) {
         int n = 0;
         for (int i = 0; i < 64; i++) {
@@ -152,6 +180,13 @@ class ReversiAI {
         return n;
     }
 
+    /**
+     * Method make a move for AI
+     *
+     * @param cell is a cell where AI wants to make the turn
+     * @param caps is array of captured chips
+     * @return number of captured chips
+     */
     private int makeMoveAI(int cell, int[] caps) {
         field[cell] = turn;
         int n = 0;
@@ -162,6 +197,11 @@ class ReversiAI {
         return n;
     }
 
+    /**
+     * @param cell is a cell where AI was make a turn in a past
+     * @param caps is array of captured in past chips
+     * @param n    number of captured in past chips
+     */
     private void unmakeMoveAI(int cell, int[] caps, int n) {
         field[cell] = 0;
         for (int i = 0; correct(caps[i]) && i < n; i++) {
@@ -170,6 +210,11 @@ class ReversiAI {
         turn = turnOpposite(turn);
     }
 
+    /**
+     * Method evaluates current field
+     *
+     * @return a number which means who is winning now and how much is difference
+     */
     private int exactEval() {
         int score = 0;
         for (int i = 0; i < 64; i++) {
@@ -180,6 +225,12 @@ class ReversiAI {
         else return -score;
     }
 
+    /**
+     * Method sets a chips on current direction as stable
+     *
+     * @param sq  is chip from which you start
+     * @param dir is current direction
+     */
     private void stableRay(int sq, int dir) {
         int s;
         for (s = sq + dir; correct(s) && field[s] == field[sq]; s += dir) {
@@ -195,15 +246,18 @@ class ReversiAI {
         }
     }
 
-    private void boarderStable(int from, int to, int step, int l1, int l2, int l3) {
+    /**
+     * Method looks for stable chips on the field. Stable means that the chip will never flip
+     */
+    private void boarderStable(int from, int to, int step, int dir1, int dir2, int dir3) {
         int i, j;
         if (field[from] != 0) {
             for (i = from; i <= to && correct(field[i]); i += step) {
                 if (field[i] != field[from]) break;
                 stable[i] = 1;
-                stableRay(i, l1);
-                stableRay(i, l2);
-                if (i != from && i != to) stableRay(i, l3);
+                stableRay(i, dir1);
+                stableRay(i, dir2);
+                if (i != from && i != to) stableRay(i, dir3);
             }
             if (correct(i) && field[i] != 0) {
                 for (j = i + 1; j <= to && correct(field[j]); j += step) {
@@ -212,9 +266,9 @@ class ReversiAI {
                 if (j > to) {
                     for (j = i + 1; j <= to && correct(field[j]); j += step) {
                         field[j] = 1;
-                        stableRay(j, l1);
-                        stableRay(j, l2);
-                        if (i != to) stableRay(j, l3);
+                        stableRay(j, dir1);
+                        stableRay(j, dir2);
+                        if (i != to) stableRay(j, dir3);
                     }
                     return;
                 }
@@ -223,13 +277,18 @@ class ReversiAI {
         if (field[to] != 0) {
             for (i = to; correct(i) && field[i] == field[to]; i -= step) {
                 stable[i] = 1;
-                stableRay(i, l1);
-                stableRay(i, l2);
-                if (i != to) stableRay(i, l3);
+                stableRay(i, dir1);
+                stableRay(i, dir2);
+                if (i != to) stableRay(i, dir3);
             }
         }
     }
 
+    /**
+     * Method evaluate current field with division chips on stable and unstable
+     *
+     * @return a number which means who is winning now and how much is difference
+     */
     private int eval() {
         for (int i = 0; i < 64; i++) {
             stable[i] = 0;
@@ -262,6 +321,16 @@ class ReversiAI {
         return score;
     }
 
+    /**
+     * Method uses alpha-beta pruning and searches for best moves
+     *
+     * @param depth is depth to which we need to go
+     * @param ply   is a number for best moves on this depth
+     * @param alpha is alpha number for alpha-beta pruning
+     * @param beta  is beta number for alpha-beta pruning
+     * @param pass  means if last player passed on his turn
+     * @return last alpha value
+     */
     private int Search(int depth, int ply, int alpha, int beta, boolean pass) {
         int i;
         int j;
@@ -325,7 +394,6 @@ class ReversiAI {
                         bestMoves[ply][1] = bestMoves[ply][0];
                         bestMoves[ply][0] = moves[i];
                     }
-//        history[turn][moves[i]] += depth * depth;
                     return score;
                 }
                 best_move = moves[i];
@@ -343,6 +411,13 @@ class ReversiAI {
     }
 
 
+    /**
+     * Main method of AI which makes everything works
+     *
+     * @param btm  just means who is make turn now
+     * @param time is time to think for AI after which it needs to return best current turn
+     * @return best current turn
+     */
     int rootSearch(boolean btm, long time) {
         int i, d;
         int best;
