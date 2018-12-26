@@ -1,4 +1,4 @@
-package petrov.model;
+package model;
 
 import java.util.Arrays;
 

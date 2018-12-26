@@ -1,4 +1,4 @@
-package petrov.model;
+package model;
 
 class ReversiAI {
     private int turn;

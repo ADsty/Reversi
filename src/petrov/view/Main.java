@@ -1,6 +1,6 @@
-package petrov.view;
+package view;
 
-import petrov.model.Field;
+import model.Field;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -10,7 +10,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
 import java.io.IOException;
 
-import petrov.controller.GenerateField;
+import controller.GenerateField;
 
 
 public class Main {

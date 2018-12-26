@@ -1,6 +1,6 @@
-package petrov.view;
+package view;
 
-import petrov.model.*;
+import model.*;
 
 import javax.swing.*;
 

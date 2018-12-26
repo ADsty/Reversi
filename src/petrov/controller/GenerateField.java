@@ -1,13 +1,13 @@
-package petrov.controller;
+package controller;
 
-import petrov.model.Field;
-import petrov.model.ReversiField;
-import petrov.view.RedrawCell;
+import model.Field;
+import model.ReversiField;
+import view.RedrawCell;
 
 import javax.swing.*;
 import java.awt.*;
 
-import static petrov.view.Main.endGame;
+import static view.Main.endGame;
 
 public class GenerateField extends Field {
     private ReversiField gameLogic = new ReversiField();

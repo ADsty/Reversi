@@ -1,6 +1,6 @@
-package petrov.model;
+package model;
 
-import petrov.view.RedrawCell;
+import view.RedrawCell;
 
 import java.util.*;
 
